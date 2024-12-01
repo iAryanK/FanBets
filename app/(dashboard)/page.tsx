@@ -15,8 +15,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const loggedIn = false;
+  if (!loggedIn) redirect("/signup");
+
   const links = [
     {
       label: "Dashboard",
@@ -48,6 +52,7 @@ export default function Home() {
     },
   ];
   const [open, setOpen] = useState(false);
+
   return (
     <div
       className={cn(
