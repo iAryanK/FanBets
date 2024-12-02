@@ -1,39 +1,93 @@
+"use client";
+
 import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Highlight } from "./shared/Highlight";
-import Form from "next/form";
+import { useRef } from "react";
+import { signUpUser } from "@/lib/actions";
+import { redirect } from "next/navigation";
 
 const SignUp = () => {
-  const handleSignUp = async () => {
-    "use server";
-    // TODO: Implement Signup logic
+  const firstname = useRef<HTMLInputElement>(null);
+  const lastname = useRef<HTMLInputElement>(null);
+  const email = useRef<HTMLInputElement>(null);
+  const password = useRef<HTMLInputElement>(null);
+  const confirmpassword = useRef<HTMLInputElement>(null);
+
+  const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const firstName = firstname.current?.value;
+    const lastName = lastname.current?.value;
+    const userEmail = email.current?.value;
+    const userPassword = password.current?.value;
+    const confirmPassword = confirmpassword.current?.value;
+
+    if (!firstName || !lastName || !userEmail || !userPassword) {
+      alert("All fields are required");
+      return;
+    }
+
+    if (userPassword !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const res = await signUpUser({
+      firstName,
+      lastName,
+      email: userEmail,
+      password: userPassword,
+    });
+
+    if (res) {
+      localStorage.setItem("token", res.token);
+      redirect("/");
+    }
   };
 
   return (
-    <Form className="form" action={handleSignUp}>
+    <form className="form">
       <p className="title">Register</p>
       <p className="message">
         Register and get full access to <Highlight>FanBets</Highlight>
       </p>
       <div className="flex">
-        <Input type="firstname" placeholder="First Name" required />
+        <Input
+          ref={firstname}
+          type="firstname"
+          placeholder="First Name"
+          required
+        />
 
-        <Input type="last name" placeholder="Last Name" required />
+        <Input
+          ref={lastname}
+          type="last name"
+          placeholder="Last Name"
+          required
+        />
       </div>
 
-      <Input type="email" placeholder="Email" required />
+      <Input ref={email} type="email" placeholder="Email" required />
 
-      <Input type="password" placeholder="Password" required />
-      <Input type="confirmpassword" placeholder="Confirm Password" required />
-      <Button className="submit">Submit</Button>
+      <Input ref={password} type="password" placeholder="Password" required />
+      <Input
+        ref={confirmpassword}
+        type="confirmpassword"
+        placeholder="Confirm Password"
+        required
+      />
+      <Button className="submit" onClick={(e) => handleSignUp(e)}>
+        Submit
+      </Button>
       <p className="signin text-center">
         Already have an acount ?{" "}
         <Link href="/signin" className="text-blue-600">
           SignIn
         </Link>
       </p>
-    </Form>
+    </form>
   );
 };
 
