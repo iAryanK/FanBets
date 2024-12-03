@@ -1,51 +1,81 @@
+"use client";
+
 import {
   Sidebar,
   SidebarBody,
   SidebarLink,
 } from "@/components/aceternity/sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IconArrowLeft,
-  IconBrandTabler,
+  IconShoppingCartPlus,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import useUserStore from "@/hooks/useUserStore";
+import { fetchUserDetails } from "@/lib/actions";
+import { redirect, usePathname } from "next/navigation";
+import useTeamStore from "@/hooks/useTeamStore";
 
 const Navigator = () => {
   const [open, setOpen] = useState(false);
+  const { team } = useTeamStore();
+  const pathname = usePathname();
+
   const links = [
     {
       label: "Dashboard",
-      href: "#",
+      href: "/",
       icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconShoppingCartPlus className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "Profile",
-      href: "#",
+      href: "/profile",
       icon: (
         <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "Settings",
-      href: "#",
+      href: "/settings",
       icon: (
         <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "Logout",
-      href: "#",
+      href: "/signin",
       icon: (
         <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
+
+  const { user, setUser } = useUserStore();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) redirect("/signin");
+
+        const userData = await fetchUserDetails(token);
+        setUser(userData);
+      } catch (err) {
+        console.error("Failed to load user data", err);
+      }
+    };
+
+    setTimeout(() => {
+      fetchData();
+    }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Sidebar open={open} setOpen={setOpen}>
@@ -54,14 +84,28 @@ const Navigator = () => {
           {open ? <Logo /> : <LogoIcon />}
           <div className="mt-8 flex flex-col gap-2">
             {links.map((link, idx) => (
-              <SidebarLink key={idx} link={link} />
+              <SidebarLink
+                key={idx}
+                link={link}
+                className={`${
+                  pathname === link.href &&
+                  `text-${team}-primary dark:text-${team}-primary`
+                }`}
+              />
             ))}
           </div>
         </div>
         <div>
           <SidebarLink
             link={{
-              label: "Fan Bets",
+              label: (
+                <div className="flex flex-col gap-1 text-xs leading-3">
+                  <p className="">
+                    {user?.firstName as string} {user?.lastName as string}
+                  </p>
+                  <p className="text-muted-foreground">{user?.email}</p>
+                </div>
+              ),
               href: "#",
               icon: (
                 <Image

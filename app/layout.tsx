@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`antialiased h-screen w-screen bg-zinc-950 ${poppins.className}`}
+        className={`antialiased h-screen w-screen bg-rcb-secondary ${poppins.className}`}
       >
         <ThemeProvider
           attribute="class"
