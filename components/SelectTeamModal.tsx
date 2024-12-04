@@ -20,8 +20,11 @@ import useTeamStore from "@/hooks/useTeamStore";
 import Image from "next/image";
 import { Highlight } from "./shared/Highlight";
 import { teamColor } from "@/lib/utils";
+import useUserStore from "@/hooks/useUserStore";
+import { updateUserTeam } from "@/lib/actions";
 
 export function SelectTeamModal() {
+  const { user, setUser } = useUserStore();
   const { showModal, setShowModal } = useModalStore();
   const { team, setTeam } = useTeamStore();
   const teams = [
@@ -37,8 +40,6 @@ export function SelectTeamModal() {
     "lsg",
   ];
 
-  console.log(team);
-
   const handleSelectTeam = (
     value:
       | "csk"
@@ -52,10 +53,20 @@ export function SelectTeamModal() {
       | "gt"
       | "lsg"
   ) => {
-    localStorage.setItem("team", value);
     setTeam(value);
+  };
 
-    document.body.style.backgroundColor = teamColor[value].primary;
+  const selectUserTeam = async () => {
+    if (!user) return;
+    const res = await updateUserTeam(user._id, team);
+
+    if (res) {
+      setUser({ ...user, team });
+      localStorage.setItem("team", team);
+
+      document.body.style.backgroundColor = teamColor[team].primary;
+      setShowModal(false);
+    }
   };
 
   if (showModal)
@@ -86,7 +97,7 @@ export function SelectTeamModal() {
               ))}
             </SelectContent>
           </Select>
-          <DialogFooter onClick={() => setShowModal(false)}>
+          <DialogFooter onClick={selectUserTeam}>
             <Button
               type="submit"
               className={`w-full bg-${team}-secondary hover:bg-${team}-secondary/80`}

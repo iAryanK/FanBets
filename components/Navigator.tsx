@@ -3,6 +3,7 @@
 import {
   Sidebar,
   SidebarBody,
+  SidebarButton,
   SidebarLink,
 } from "@/components/aceternity/sidebar";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import useUserStore from "@/hooks/useUserStore";
 import { fetchUserDetails } from "@/lib/actions";
 import { redirect, usePathname } from "next/navigation";
 import useTeamStore from "@/hooks/useTeamStore";
+import { LogoutAlert } from "./LogoutAlert";
 
 const Navigator = () => {
   const [open, setOpen] = useState(false);
@@ -45,13 +47,6 @@ const Navigator = () => {
       href: "/settings",
       icon: (
         <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
-    },
-    {
-      label: "Logout",
-      href: "/signin",
-      icon: (
-        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
@@ -93,6 +88,13 @@ const Navigator = () => {
                 }`}
               />
             ))}
+            <LogoutAlert>
+              <SidebarButton
+                label="Logout"
+                icon=<IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+                className={`text-${team}-primary dark:text-${team}-primary`}
+              />
+            </LogoutAlert>
           </div>
         </div>
         <div>

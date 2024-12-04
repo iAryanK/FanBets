@@ -1,9 +1,11 @@
 import { create } from "zustand";
 
 interface User {
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
+  team?: string;
 }
 
 interface UserStore {

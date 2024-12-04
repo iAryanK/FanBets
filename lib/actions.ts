@@ -4,6 +4,7 @@ import { User } from "@/models/user.model";
 import { connectToDB } from "./db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Product } from "@/models/product.model";
 
 export const signUpUser = async ({
   firstName,
@@ -106,5 +107,32 @@ export const fetchUserDetails = async (token: string) => {
   } catch (error) {
     console.error("[FETCH USER DETAILS ERROR]", error);
     throw new Error("Failed to fetch user details");
+  }
+};
+
+export const updateUserTeam = async (userId: string, team: string) => {
+  try {
+    connectToDB();
+
+    await User.findByIdAndUpdate(userId, {
+      team,
+    });
+    return true;
+  } catch (error) {
+    console.error("[UPDATE USER TEAM ERROR]", error);
+    return false;
+  }
+};
+
+export const fetchAllProducts = async () => {
+  try {
+    connectToDB();
+
+    const products = await Product.find();
+
+    return JSON.parse(JSON.stringify(products));
+  } catch (error) {
+    console.error("[FETCH ALL PRODUCTS ERROR]", error);
+    throw new Error("Failed to fetch products");
   }
 };
