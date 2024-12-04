@@ -55,6 +55,7 @@ const SignUp = () => {
       </p>
       <div className="flex">
         <Input
+          className="bg-white border-none text-black"
           ref={firstname}
           type="firstname"
           placeholder="First Name"
@@ -62,6 +63,7 @@ const SignUp = () => {
         />
 
         <Input
+          className="bg-white border-none text-black"
           ref={lastname}
           type="last name"
           placeholder="Last Name"
@@ -69,10 +71,23 @@ const SignUp = () => {
         />
       </div>
 
-      <Input ref={email} type="email" placeholder="Email" required />
-
-      <Input ref={password} type="password" placeholder="Password" required />
       <Input
+        className="bg-white border-none text-black"
+        ref={email}
+        type="email"
+        placeholder="Email"
+        required
+      />
+
+      <Input
+        className="bg-white border-none text-black"
+        ref={password}
+        type="password"
+        placeholder="Password"
+        required
+      />
+      <Input
+        className="bg-white border-none text-black"
         ref={confirmpassword}
         type="confirmpassword"
         placeholder="Confirm Password"

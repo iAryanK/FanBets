@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FanBets
 
-## Getting Started
+FanBets is an not just a place where users can bet on their favorite IPL team, they can also use this e-commerce platform to purchase cricket related stuffs.
 
-First, run the development server:
+## Development Process
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. setup shadcn & theme toggle
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   - initialize the Next JS 15 app and integrate it with shadcn UI and added theme toggle button to support both dark and light mode
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. create auth UI
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   - UI for both signup route and signin routes are created
 
-## Learn More
+3. implement auth backend
 
-To learn more about Next.js, take a look at the following resources:
+   - create user schema to store user details in mongoDB
+   - server actions used to implement the logic to save & fetch user details
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. add Select Team Modal
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   - A global modal is created for loggedIn users to show them a modal to select their favourite team
 
-## Deploy on Vercel
+5. implement fetch products
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   - store some dummy data into mongoDB database
+   - fetch those data using server actions and display them on dashboard UI
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. add Change Team option in profile section
+
+   - In the /profile route, the user has now the option to change their favourite team
