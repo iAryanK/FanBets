@@ -1,4 +1,5 @@
 import SideBar from "@/components/Navigator";
+import { SelectTeamModal } from "@/components/SelectTeamModal";
 import TopBar from "@/components/shared/TopBar";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +12,7 @@ export default function HomeLayout({
     <div className="h-full w-full m-auto md:p-2">
       <div
         className={cn(
-          "md:rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 flex-1  mx-auto h-full border-neutral-200 dark:border-neutral-700 overflow-hidden"
+          "md:rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 flex-1  mx-auto h-full border-neutral-200 dark:border-neutral-700 overflow-x-hidden"
         )}
       >
         <SideBar />
@@ -22,6 +23,7 @@ export default function HomeLayout({
           </div>
         </div>
       </div>
+      <SelectTeamModal />
     </div>
   );
 }

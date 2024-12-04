@@ -64,7 +64,9 @@ export function SelectTeamModal() {
       setUser({ ...user, team });
       localStorage.setItem("team", team);
 
-      document.body.style.backgroundColor = teamColor[team].primary;
+      if (team) {
+        document.body.style.backgroundColor = teamColor[team].primary;
+      }
       setShowModal(false);
     }
   };
@@ -72,7 +74,7 @@ export function SelectTeamModal() {
   if (showModal)
     return (
       <Dialog open={showModal}>
-        <DialogContent className="sm:max-w-[550px] bg-zinc-900">
+        <DialogContent className="sm:max-w-[550px]">
           <DialogTitle>
             Welcome to <Highlight className="tracking-wide">FanBets</Highlight>
           </DialogTitle>
@@ -84,19 +86,24 @@ export function SelectTeamModal() {
               height={500}
               className="w-full h-60 object-cover rounded"
             />
+            <p className="text-xs text-muted-foreground">
+              You can always change your preferred team by visiting the profile
+              section.
+            </p>
+            <Select onValueChange={handleSelectTeam}>
+              <SelectTrigger className="w-[180px] ">
+                <SelectValue placeholder="Select your favourite IPL team" />
+              </SelectTrigger>
+              <SelectContent className="">
+                {teams.map((team) => (
+                  <SelectItem key={team} value={team} className="uppercase">
+                    {team}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </DialogHeader>
-          <Select onValueChange={handleSelectTeam}>
-            <SelectTrigger className="w-[180px] bg-zinc-800">
-              <SelectValue placeholder="Select your favourite IPL team" />
-            </SelectTrigger>
-            <SelectContent className="bg-zinc-800">
-              {teams.map((team) => (
-                <SelectItem key={team} value={team} className="uppercase">
-                  {team}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
           <DialogFooter onClick={selectUserTeam}>
             <Button
               type="submit"

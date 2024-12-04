@@ -1,28 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useModalStore from "@/hooks/useModalStore";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { fetchAllProducts } from "@/lib/actions";
+import useTeamStore from "@/hooks/useTeamStore";
 
 const Dashboard = () => {
-  const { setShowModal } = useModalStore();
   const [products, setProducts] = useState([]);
+  const { team } = useTeamStore();
 
   const getAllProducts = async () => {
     const res = await fetchAllProducts();
     setProducts(res);
-    console.log(res);
   };
 
   useEffect(() => {
     getAllProducts();
 
-    setTimeout(() => {
-      const team = localStorage.getItem("team");
-      if (!team) setShowModal(true);
-    }, 5000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -36,7 +31,7 @@ const Dashboard = () => {
               className="relative drop-shadow-xl w-full h-72 overflow-hidden rounded-xl dark:bg-[#3d3c3d] hover:scale-105 transition-all duration-300 ease-in-out"
             >
               <div className="absolute text-white z-[1] opacity-90 rounded-xl inset-0.5  bg-zinc-200  dark:bg-[#323132] p-1 space-y-2">
-                <div className="bg-white rounded-xl">
+                <div className={`bg-white rounded-xl`}>
                   <Image
                     src={imageurl}
                     alt={name}
@@ -58,7 +53,7 @@ const Dashboard = () => {
                     {"  "}
                     <span> ₹{price}</span>
                   </p>
-                  <Button size={"sm"} className="">
+                  <Button size={"sm"} className={`bg-${team}-primary`}>
                     Buy Now
                   </Button>
                 </div>

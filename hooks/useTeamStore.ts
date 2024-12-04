@@ -11,7 +11,8 @@ interface TeamStore {
     | "rr"
     | "pbks"
     | "gt"
-    | "lsg";
+    | "lsg"
+    | "";
   setTeam: (
     team:
       | "csk"
@@ -24,11 +25,12 @@ interface TeamStore {
       | "pbks"
       | "gt"
       | "lsg"
+      | ""
   ) => void;
 }
 
 const useTeamStore = create<TeamStore>((set) => ({
-  team: "kkr",
+  team: "",
   setTeam: (team) => set({ team }),
 }));
 
